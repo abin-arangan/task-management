@@ -13,7 +13,7 @@ const getTaskDetailsService = async(req) =>{
        let priority = req?.req?.priority ?? '';
        let status = req?.req?.status ?? '';
        let assignee = req?.req?.assignee ?? '';
-       let taskId = req?.req?.taskId ?? '';
+       let taskId = req?.req?._id ?? '';
 
         if(actionType == 'all'){
             let result = await taskDetailsModel.find({});

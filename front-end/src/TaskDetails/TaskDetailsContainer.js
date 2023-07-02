@@ -211,7 +211,6 @@ const TaskDetailsContainer = () => {
         { value: 'Completed', id: 6 }
     ];
 
-    console.info('task Info:',taskInformations);
 
     const tableColumns = [{
         title: 'Task Title',
