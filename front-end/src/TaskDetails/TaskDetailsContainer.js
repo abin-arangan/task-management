@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { Button, Space, Popconfirm } from 'antd';
+import { Button, Space, Tag } from 'antd';
 
 import TaskDetails from './TaskDetails';
 import homeOperations from '../state/features/Home/operations';
@@ -103,12 +103,12 @@ const TaskDetailsContainer = () => {
     };
 
 
-    const onChangeDueDate = (date) => {
-        console.info('due:', date, '--', date.format('YYYY-MM-DD'));
+    const onChangeDueDate = (date,dateString) => {
+        console.info('due:', dateString,typeof(date));
         let data = {
             taskTitle: taskDetails?.taskTitle ?? '',
             description: taskDetails?.description ?? '',
-            dueDate: date.format('YYYY-MM-DD'),
+            dueDate: dateString,
             dueDateFormat: date,
             priority: taskDetails?.priority ?? undefined,
             status: taskDetails?.status ?? undefined,
@@ -122,6 +122,12 @@ const TaskDetailsContainer = () => {
 
     const showModalToEdit = (record) => {
         setModalTitle('Edit Task Details');
+        let dueDateFormat = record?.dueDate;
+
+        var dateObj = new Date(dueDateFormat);
+        var momentObj = moment(dateObj);
+
+        console.info('dueDateFormat:',dueDateFormat, momentObj);
         setTaskDetails(record);
         setEditedTaskId(record?._id);
         setIsModalVisible(true);
@@ -202,6 +208,8 @@ const TaskDetailsContainer = () => {
         { value: 'Completed', id: 6 }
     ];
 
+    console.info('task Info:',taskInformations);
+
     const tableColumns = [{
         title: 'Task Title',
         dataIndex: 'taskTitle',
@@ -220,10 +228,10 @@ const TaskDetailsContainer = () => {
         title: 'Due Date',
         dataIndex: 'dueDate',
         key: 'dueDate',
-        render: (text, record) => `${record.dueDate}`,
+        render: (text, record) => `${moment(record.dueDate).utc().format("YYYY-MM-DD")}`,
         sorter: {
             compare: (a, b) =>
-                a.dueDate.format('YYYY-MM-DD') - b.dueDate.format("YYYY-MM-DD"),
+            moment(a.dueDate).utc().format("YYYY-MM-DD") - moment(b.dueDate).utc().format("YYYY-MM-DD"),
         }
     },
     {
@@ -244,7 +252,11 @@ const TaskDetailsContainer = () => {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        render: (text, record) => `${record.status}`,
+        render: (text, record) => (
+            <Tag color={record?.status == 'Completed' ? 'green' : record?.status == 'Not Started' ? 'red' : record?.status == 'Assigned' || record?.status == 'Started' ? 'blue' : 'gold'}>
+                {record?.status.toUpperCase()}
+            </Tag>
+        ),
         sorter: (a, b) => a.status.length - b.status.length
     },
     {
@@ -253,25 +265,13 @@ const TaskDetailsContainer = () => {
         key: 'edit',
         render: (index, record) => (
             <Space size="middle">
-                <Button onClick={() => showModalToEdit(record)}>
+                <Button type='primary' onClick={() => showModalToEdit(record)}>
                     Edit
                 </Button>
-
-                {/* <Popconfirm
-                    title="Delete task"
-                    description="Are you sure to delete this task?"
-                    onConfirm={onDeleteTask(record)}
-                    // onCancel={onCancel}
-                    okText="Yes"
-                    cancelText="No"
-
-                > */}
                 <Button danger onClick={() => onDeleteTask(record)}>Delete</Button>
-                {/* </Popconfirm> */}
             </Space>
         )
-    },
-
+    }
     ]
 
 

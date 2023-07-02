@@ -1,41 +1,43 @@
 
 import React from 'react';
-import { Button, Table, Input, Modal, DatePicker, Select, Popconfirm } from 'antd';
+import { Button, Table, Input, Modal, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import './TaskDetails.scss';
 
 const TaskDetails = (props) => {
 
-
   return (
     <>
-      <div >
+      <div className='divide'>
 
-        <h2>TaskDetails</h2>
-        <Button className='customButton' type='primary' onClick={props.onAddTask}> Add task</Button>
-
+        <h5>TaskDetails</h5>
+        <div >
+        <Button className='customButton'  onClick={props.onAddTask}> Add new task</Button>
+        </div>
       </div>
 
-      <div className='tablestyles'>
-        {props.taskInformations?.length > 0 ?
-          <Table
-            loading={props.isLoadingTable}
-            bordered
-            rowKey='_id'
-            columns={props.tableColumns}
-            dataSource={props.taskInformations}
-            pagination={{ defaultCurrent: 1, defaultPageSize: 5, total: props.taskInformations?.length ?? 0 }}
+      <div className='divide'>
+        <div className='tablestyles'>
+          {props.taskInformations?.length > 0 ?
+            <Table
+              loading={props.isLoadingTable}
+              bordered
+              rowKey='_id'
+              columns={props.tableColumns}
+              dataSource={props.taskInformations}
+              pagination={{ defaultCurrent: 1, defaultPageSize: 7, total: props.taskInformations?.length ?? 0 }}
 
-          />
-          : <Table
-            bordered
-            rowKey='_id'
-            columns={props.tableColumns}
-            locale={{ emptyText: 'No data' }}
-            pagination={{ defaultCurrent: 1, defaultPageSize: 5, total: props.taskInformations?.length ?? 0 }}
-          />
-        }
+            />
+            : <Table
+              bordered
+              rowKey='_id'
+              columns={props.tableColumns}
+              locale={{ emptyText: 'No data' }}
+              
+            />
+          }
 
+        </div>
       </div>
 
       {
@@ -59,7 +61,7 @@ const TaskDetails = (props) => {
                 </div>
                 <div className="input-row">
                   <label for="input3">Due Date:</label>
-                  <DatePicker  format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} />
+                  <DatePicker format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} />
                 </div>
                 <div className="input-row">
                   <label for="input3">Priority:</label>
@@ -70,7 +72,7 @@ const TaskDetails = (props) => {
                   <Input className='inputBox' placeholder="Assignee" value={props.taskDetails.assignee ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'assignee')} />
                 </div>
                 <div className="input-row">
-                  <label htmlFor ="input3">Status:</label>
+                  <label htmlFor="input3">Status:</label>
                   <Select className='inputBox' placeholder='Select Status' value={props.taskDetails.status ?? undefined} options={props.statusOptions} onChange={(value) => props.onChangeTaskDetails(value, 'status')} />
                 </div>
               </div>
@@ -89,16 +91,6 @@ const TaskDetails = (props) => {
             onCancel={props.onConfirmCancel}
           > Do you want to delete the selected task ?
           </Modal> : null
-
-        // Modal.confirm({
-        //   title: 'Delete task information',
-        //   content: 'Do you want to delete the selected task?',
-        //   // okText: 'Yes',
-        //   // cancelText: 'No',
-        //   // onOk:() => {
-        //   //   props.onDeleteConfirm
-        //   // }
-        // }) : null
       }
     </>
   );

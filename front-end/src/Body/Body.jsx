@@ -3,20 +3,20 @@ import React from 'react';
 import './body.scss';
 import TaskDetails from '../TaskDetails';
 import Header from '../Header';
-import Footer from '../Footer';
+// import Footer from '../Footer';
 
-const Body = (props) => {
+const Body = () => {
     return (
         <div>
           
-          <Header title={props.title ?? 'TITLE'} />
+          <Header title={'TASK MANAGEMENT'} />
           {
             
             < TaskDetails
             /> 
           }
           
-          <Footer />
+          {/* <Footer /> */}
         </div>
       );
 };
