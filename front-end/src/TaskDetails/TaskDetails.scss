@@ -7,6 +7,14 @@
   color: red;
 }
 
+.thin-row td {
+  font-weight: lighter;
+}
+
+.ant-table-empty .ant-table-tbody {
+  height: 300px; 
+}
+
 .customButton {
   display: inline-block;
   outline: none;

@@ -26,9 +26,11 @@ const TaskDetails = (props) => {
               columns={props.tableColumns}
               dataSource={props.taskInformations}
               pagination={{ defaultCurrent: 1, defaultPageSize: 7, total: props.taskInformations?.length ?? 0 }}
+              rowClassName='thin-row'
 
             />
-            : <Table
+            :
+             <Table
               bordered
               rowKey='_id'
               columns={props.tableColumns}
