@@ -11,7 +11,7 @@ const Body = (props) => {
           
           <Header title={props.title ?? 'TITLE'} />
           {
-            (!props.isMovies && !props.isBooks ) &&
+            
             < TaskDetails
             /> 
           }

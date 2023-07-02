@@ -7,6 +7,32 @@
   color: red;
 }
 
+.modal-container {
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inputBox {
+  width: 300px;
+  margin-right: -30px;
+}
+
+.input-row label {
+  margin-right: 10px;
+}
+
 .inputWidth {
   width: 25%;
 }

@@ -1,6 +1,5 @@
 import {
-    SET_TASK_LIST,
-    SET_MOVIE_DETAILS
+    SET_TASK_LIST
 } from './types';
 
 const reducers = (state = {}, action) =>{

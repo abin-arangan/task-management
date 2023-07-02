@@ -10,8 +10,6 @@ const TaskDetailsSchema = new mongoose.Schema({
     status: {type: String}
 });
 
-// TaskDetailsSchema.index({ movie: 1 }, { unique: true });
-
 
 const TaskDetails = mongoose.model('taskInformations',TaskDetailsSchema,'taskInformations');
 

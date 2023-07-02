@@ -7,27 +7,11 @@ import Body from './Body';
 
 const BodyContainer = () =>{
 
-        const [isMovies, setIsMovies] = useState(false);
-        const [isBooks, setIsBooks] = useState(false);
-
-
-        const onSelectBooks = () =>{
-            setIsBooks(true);
-            setIsMovies(false);
-        }
-
-        const onSelectMovies = () =>{
-            setIsBooks(false);
-            setIsMovies(true);
-        }
 
 
     return(
         <Body
-            onSelectBooks = {onSelectBooks}
-            onSelectMovies = {onSelectMovies}
-            isMovies = {isMovies}
-            isBooks = {isBooks}
+            
         />
     )
 }; 

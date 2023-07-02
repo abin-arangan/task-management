@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Button, Table, Input, Modal, DatePicker, Select } from 'antd';
+import { Button, Table, Input, Modal, DatePicker, Select, Popconfirm } from 'antd';
 import moment from 'moment';
 import './TaskDetails.scss';
 
 const TaskDetails = (props) => {
+
 
   return (
     <>
@@ -46,15 +47,58 @@ const TaskDetails = (props) => {
             onCancel={props.onHandleCancel}
           >
             {props?.isError ? <p className='errorMsg'>{props.errorMessage}</p> : null}
-            Task Name: <Input placeholder="Task Name" value={props.taskDetails.taskTitle ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'taskTitle')} />
-            Description: <Input placeholder="Description" value={props.taskDetails.description ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'description')} />
-            <br />
-            Due Date: <DatePicker format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} />
-            Priority: <Select placeholder= "Select Priority"  value = {props.taskDetails.priority ?? undefined} options={props.priorityOptions}  onChange={(value) => props.onChangeTaskDetails(value, 'priority')}/>
-            Assignee: <Input placeholder="Assignee" value={props.taskDetails.assignee ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'assignee')} />
-            Status: <Select placeholder= 'Select Status' value = {props.taskDetails.status ?? undefined} options={props.statusOptions} onChange={(value) => props.onChangeTaskDetails(value, 'status')}/>
-
+            <div className="modal-container">
+              <div className="modal-content">
+                <div className="input-row">
+                  <label for="input1">Task Title:</label>
+                  <Input className='inputBox' placeholder="Task Name" value={props.taskDetails.taskTitle ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'taskTitle')} />
+                </div>
+                <div className="input-row">
+                  <label for="input2">Description:</label>
+                  <Input className='inputBox' placeholder="Description" value={props.taskDetails.description ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'description')} />
+                </div>
+                <div className="input-row">
+                  <label for="input3">Due Date:</label>
+                  <DatePicker  format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} />
+                </div>
+                <div className="input-row">
+                  <label for="input3">Priority:</label>
+                  <Select className='inputBox' placeholder="Select Priority" value={props.taskDetails.priority ?? undefined} options={props.priorityOptions} onChange={(value) => props.onChangeTaskDetails(value, 'priority')} />
+                </div>
+                <div className="input-row">
+                  <label for="input3">Assignee:</label>
+                  <Input className='inputBox' placeholder="Assignee" value={props.taskDetails.assignee ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'assignee')} />
+                </div>
+                <div className="input-row">
+                  <label htmlFor ="input3">Status:</label>
+                  <Select className='inputBox' placeholder='Select Status' value={props.taskDetails.status ?? undefined} options={props.statusOptions} onChange={(value) => props.onChangeTaskDetails(value, 'status')} />
+                </div>
+              </div>
+            </div>
           </Modal> : null
+      }
+      {
+        props?.isModalConfirm ?
+
+          <Modal
+            title={'Delete'}
+            visible={props.isModalConfirm}
+            okText={'Yes'}
+            cancelText={'No'}
+            onOk={props.onDeleteConfirm}
+            onCancel={props.onConfirmCancel}
+          > Do you want to delete the selected task ?
+          </Modal> : null
+
+        // Modal.confirm({
+        //   title: 'Delete task information',
+        //   content: 'Do you want to delete the selected task?',
+        //   // okText: 'Yes',
+        //   // cancelText: 'No',
+        //   // onOk:() => {
+        //   //   props.onDeleteConfirm
+        //   // }
+        // }) : null
       }
     </>
   );

@@ -25,13 +25,20 @@ function* getTaskDetailsSaga(req) {
         let priority = req?.req?.req?.priority ?? '';
         let status = req?.req?.req?.status ?? '';
         let assignee = req?.req?.req?.assignee ?? '';
+        let taskId = req?.req?.req?._id ?? '';
 
 
-        const response = yield call(api.callGet, `${serverURL}/taskData/getTaskDetails?taskTitle=${taskTitle}&description=${description}&dueDate=${dueDate}&actionType=${actionType}&priority=${priority}&status=${status}&assignee=${assignee}`);
-        console.info('sagas Response Data:',response);
-        if(response && response?.data?.rc == 0){
+        const response = yield call(api.callGet, `${serverURL}/taskData/getTaskDetails?taskTitle=${taskTitle}&description=${description}&dueDate=${dueDate}&actionType=${actionType}&priority=${priority}&status=${status}&assignee=${assignee}&taskId=${taskId}`);
+        
+        if(response && response?.data?.rc == 0){    
             const tasks = response?.data?.data ?? [];
             yield put(homeActions.setTaskDetails(tasks));
+           if(actionType != 'all'){
+            notification.success({
+                message: 'Success',
+                description: response?.data?.message ?? '',
+            });
+           }
         }
        
     }catch(error){
