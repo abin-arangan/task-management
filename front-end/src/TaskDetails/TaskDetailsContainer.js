@@ -232,10 +232,7 @@ const TaskDetailsContainer = () => {
         dataIndex: 'dueDate',
         key: 'dueDate',
         render: (text, record) => `${moment(record.dueDate).utc().format("YYYY-MM-DD")}`,
-        sorter: {
-            compare: (a, b) =>
-            moment(a.dueDate).utc().format("YYYY-MM-DD") - moment(b.dueDate).utc().format("YYYY-MM-DD"),
-        }
+        sorter: (a, b) => dayjs(a.dueDate).unix() - dayjs(b.dueDate).unix(),
     },
     {
         title: 'Priority',
