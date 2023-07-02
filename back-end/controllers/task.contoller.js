@@ -3,8 +3,7 @@ const {taskService} = require('../services');
 
 
 const getTaskDetailsContoller = (async (req,res) =>{
-    const response = await taskService.getTaskDetailsService(req?.query);
-    console.log('controller resp:',response);
+    const response = await taskService.getTaskDetailsService(req?.body?.data);
     res.status(httpStatus.OK).send(response);
 });
 

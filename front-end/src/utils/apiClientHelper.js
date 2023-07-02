@@ -36,15 +36,42 @@ const get = (endpoint, headers, options = {}) =>{
         });
 };
 
+const post = (endpoint,data, headers, options = {}) =>{
+    
+    const commonHeaders = {
+        'Content-Type': 'application/json',
+        'x-correlation-id': uuidv4()
+    };
+
+    const commonOptions = {
+        method: 'POST',
+        responseType: 'json',
+        ...options
+    };
+
+    return axios.post(endpoint,
+        {
+            ...commonOptions,
+            headers: {...commonHeaders,...headers},
+            data
+        })
+        .then(response => {return response;})
+        .catch((error) =>{
+            throw new CustomException(error);
+        });
+};
+
+
 function exportFunctions() {
     let callGet = get;
+    let callPost = post;
     return{
-        callGet
+        callGet,
+        callPost
+
     };
 }
 
 export default exportFunctions();
 
-export const TestExports = {
-    get
-}
+

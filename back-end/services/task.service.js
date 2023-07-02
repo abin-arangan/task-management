@@ -5,17 +5,15 @@ const {taskDetailsModel} = require('../model');
 
 const getTaskDetailsService = async(req) =>{
     try{
-       
-       let taskTitle = req?.taskTitle ?? '';
-       let description = req?.description ?? '';
-       let actionType = req?.actionType ?? '';
-       let dueDate = req?.dueDate ?? '';
-       let priority = req?.priority ?? '';
-       let status = req?.status ?? '';
-       let assignee = req?.assignee ?? '';
-       let taskId = req?.taskId ?? '';
 
-
+       let taskTitle = req?.req?.taskTitle ?? '';
+       let description = req?.req?.description ?? '';
+       let actionType = req?.type ?? '';
+       let dueDate = req?.req?.dueDate ?? '';
+       let priority = req?.req?.priority ?? '';
+       let status = req?.req?.status ?? '';
+       let assignee = req?.req?.assignee ?? '';
+       let taskId = req?.req?.taskId ?? '';
 
         if(actionType == 'all'){
             let result = await taskDetailsModel.find({});
@@ -140,7 +138,8 @@ const getTaskDetailsService = async(req) =>{
         console.error('API error',err);
         return{
             rc: 8,
-            data: []
+            data: [],
+            message: 'Error in fetching data'
         }
     }
 }

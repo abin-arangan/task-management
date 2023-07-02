@@ -10,7 +10,7 @@ const TaskDetails = (props) => {
     <>
       <div className='divide'>
 
-        <h5>TaskDetails</h5>
+        {/* <h5>TaskDetails</h5> */}
         <div >
           <Button className='customButton' onClick={props.onAddTask}> Add new task</Button>
         </div>
