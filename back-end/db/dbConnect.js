@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 
-//bookstore
-const url = 'mongodb://127.0.0.1:27017/InformationCenter?directConnection=true'; // replace with your database URI
 
-// = process.env.MONGO_CONNECTION_STRING 
-console.log('process:',process.env.MONGO_CONNECTION_STRING);
+const url = 'mongodb://127.0.0.1:27017/InformationCenter?directConnection=true'; // replace with your database URI
 
 const connectDB = async () => {
     try {

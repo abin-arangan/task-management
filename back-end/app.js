@@ -7,7 +7,6 @@ var connectDB = require('./db/dbConnect');
 var app=express();
 
 const corsOptions = {
-    // origin: "http://localhost:3000"
     orgin:[]
 };
 app.use(cors(corsOptions));
