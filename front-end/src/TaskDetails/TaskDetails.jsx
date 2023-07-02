@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Button, Table, Input, Modal, DatePicker, Select } from 'antd';
-import moment from 'moment';
+import { Button, Table, Input, Modal, DatePicker, Select, Row, Col } from 'antd';
+import dayjs from 'dayjs';
 import './TaskDetails.scss';
 
 const TaskDetails = (props) => {
@@ -12,7 +12,7 @@ const TaskDetails = (props) => {
 
         <h5>TaskDetails</h5>
         <div >
-        <Button className='customButton'  onClick={props.onAddTask}> Add new task</Button>
+          <Button className='customButton' onClick={props.onAddTask}> Add new task</Button>
         </div>
       </div>
 
@@ -33,7 +33,7 @@ const TaskDetails = (props) => {
               rowKey='_id'
               columns={props.tableColumns}
               locale={{ emptyText: 'No data' }}
-              
+
             />
           }
 
@@ -47,36 +47,43 @@ const TaskDetails = (props) => {
             visible={props.isModalVisible}
             onOk={props.onHandleSave}
             onCancel={props.onHandleCancel}
+            okText = 'Save'
           >
             {props?.isError ? <p className='errorMsg'>{props.errorMessage}</p> : null}
-            <div className="modal-container">
-              <div className="modal-content">
-                <div className="input-row">
-                  <label for="input1">Task Title:</label>
-                  <Input className='inputBox' placeholder="Task Name" value={props.taskDetails.taskTitle ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'taskTitle')} />
-                </div>
-                <div className="input-row">
-                  <label for="input2">Description:</label>
-                  <Input className='inputBox' placeholder="Description" value={props.taskDetails.description ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'description')} />
-                </div>
-                <div className="input-row">
-                  <label for="input3">Due Date:</label>
-                  <DatePicker format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} />
-                </div>
-                <div className="input-row">
-                  <label for="input3">Priority:</label>
-                  <Select className='inputBox' placeholder="Select Priority" value={props.taskDetails.priority ?? undefined} options={props.priorityOptions} onChange={(value) => props.onChangeTaskDetails(value, 'priority')} />
-                </div>
-                <div className="input-row">
-                  <label for="input3">Assignee:</label>
-                  <Input className='inputBox' placeholder="Assignee" value={props.taskDetails.assignee ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'assignee')} />
-                </div>
-                <div className="input-row">
-                  <label htmlFor="input3">Status:</label>
-                  <Select className='inputBox' placeholder='Select Status' value={props.taskDetails.status ?? undefined} options={props.statusOptions} onChange={(value) => props.onChangeTaskDetails(value, 'status')} />
-                </div>
-              </div>
-            </div>
+           
+        <div className='modalContainer'>
+          
+        <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label>Task Title:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><Input className='inputBox' placeholder="Task Name" value={props.taskDetails.taskTitle ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'taskTitle')} /></Col>
+            </Row>
+            <br/>
+            <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label >Description:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><Input className='inputBox' placeholder="Description" value={props.taskDetails.description ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'description')} /></Col>
+            </Row>
+            <br/>
+            <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label >Due Date:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><DatePicker className='inputBox' format="YYYY-MM-DD" onChange={props.onChangeDueDate} value={props.taskDetails.dueDateFormat} disabledDate={props.disabledDate} /></Col>
+            </Row>
+            <br/>
+            <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label >Priority:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><Select className='inputBox' placeholder="Select Priority" value={props.taskDetails.priority ?? undefined} options={props.priorityOptions} onChange={(value) => props.onChangeTaskDetails(value, 'priority')} /></Col>
+            </Row>
+            <br/>
+            <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label >Assignee:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><Input className='inputBox' placeholder="Assignee" value={props.taskDetails.assignee ?? undefined} onChange={(e) => props.onChangeTaskDetails(e.target.value, 'assignee')} /></Col>
+            </Row>
+            <br/>
+            <Row gutter={[8, 8]}>
+              <Col className="gutter-row" span={6}><label >Status:<span style={{ color: 'red' }}>*</span></label></Col>
+              <Col className="gutter-row" span={6}><Select className='inputBox' placeholder='Select Status' value={props.taskDetails.status ?? undefined} options={props.statusOptions} onChange={(value) => props.onChangeTaskDetails(value, 'status')} /></Col>
+            </Row>
+            <br/>
+        </div>
           </Modal> : null
       }
       {

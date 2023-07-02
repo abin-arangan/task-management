@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { Button, Space, Tag } from 'antd';
 
+import dayjs from 'dayjs';
 import TaskDetails from './TaskDetails';
 import homeOperations from '../state/features/Home/operations';
 import { selectors as homeSelectors } from '../state/features/Home';
@@ -104,7 +105,8 @@ const TaskDetailsContainer = () => {
 
 
     const onChangeDueDate = (date,dateString) => {
-        console.info('due:', dateString,typeof(date));
+        const dateNew = new Date(dateString);
+
         let data = {
             taskTitle: taskDetails?.taskTitle ?? '',
             description: taskDetails?.description ?? '',
@@ -122,22 +124,23 @@ const TaskDetailsContainer = () => {
 
     const showModalToEdit = (record) => {
         setModalTitle('Edit Task Details');
-        let dueDateFormat = record?.dueDate;
 
-        var dateObj = new Date(dueDateFormat);
-        var momentObj = moment(dateObj);
-
-        console.info('dueDateFormat:',dueDateFormat, momentObj);
+        record.dueDateFormat= dayjs(record.dueDate);
         setTaskDetails(record);
         setEditedTaskId(record?._id);
         setIsModalVisible(true);
     }
 
+    const disabledDate = (current) => {
+        return current && current.isBefore(dayjs().startOf('day'));
+      };
+
     const onHandleSave = () => {
         let asArray = Object.entries(taskDetails);
-        let emptyInputs = asArray.filter(([key, value]) => value == '' || value == undefined);
+        let emptyInputs = asArray.filter(([key, value]) => (value == '' || value == undefined) && (key != '__v' && key != '_id'));
         emptyInputs = Object.fromEntries(emptyInputs);
         if (Object.keys(taskDetails)?.length == 0 || Object.keys(emptyInputs)?.length > 0) {
+            
             setIsError(true);
             setErrorMessage('Please enter all input fields');
         } else {
@@ -295,6 +298,7 @@ const TaskDetailsContainer = () => {
             onDeleteConfirm={onDeleteConfirm}
             onDeleteTask={onDeleteTask}
             onConfirmCancel={onConfirmCancel}
+            disabledDate = {disabledDate}
 
         />
     )
