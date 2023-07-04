@@ -1,0 +1,16 @@
+.center {
+    background-color: lightgrey;
+    border: 1px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 400px;
+    height: 330px;
+  }
+
+.login-form-button{
+    text-align: center;
+    margin-left: 40px;
+}

@@ -5,11 +5,11 @@ import TaskDetails from '../TaskDetails';
 import Header from '../Header';
 // import Footer from '../Footer';
 
-const Body = () => {
+const Body = (props) => {
     return (
         <div>
           
-          <Header title={'TASK MANAGEMENT'} />
+          <Header title={'TASK MANAGEMENT'} setIsLoggedIn={props.setIsLoggedIn} />
           {
             
             < TaskDetails

@@ -11,13 +11,22 @@ import { selectors as homeSelectors } from '../state/features/Home';
 const TaskDetailsContainer = () => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [taskDetails, setTaskDetails] = useState({});
+    const [taskDetails, setTaskDetails] = useState({
+        taskTitle: '',
+        description: '',
+        dueDate: '',
+        dueDateFormat: '',
+        priority: undefined,
+        status: undefined,
+        assignee: ''
+    });
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [modalTitle, setModalTitle] = useState('');
     const [editedTaskId, setEditedTaskId] = useState({});
     const [isModalConfirm, setIsModalConfirm] = useState(false);
     const [recordToDelete, setRecordToDelete] = useState(false);
+    const [isLoadingTable, setIsLoadingTable] = useState(false);
 
     const dispatch = useDispatch();
     const dispatchTaskDetails = homeOperations.dispatchTaskDetails(dispatch);
@@ -35,97 +44,82 @@ const TaskDetailsContainer = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (taskInformations?.length > 0) {
+            setIsLoadingTable(false);
+        } else {
+            setIsLoadingTable(false);
+        }
+    }, [taskInformations])
+
 
 
     const onAddTask = () => {
-        setTaskDetails({});
+        setTaskDetails({
+            taskTitle: '',
+            description: '',
+            dueDate: '',
+            dueDateFormat: '',
+            priority: undefined,
+            status: undefined,
+            assignee: ''
+        });
         setModalTitle('Add Task Details');
         setIsModalVisible(true);
     };
 
     const onChangeTaskDetails = (value, input) => {
-        let data;
+
         setIsError(false);
         setErrorMessage('');
         if (input == 'taskTitle') {
-            data = {
-                taskTitle: value,
-                description: taskDetails?.description ?? '',
-                dueDate: taskDetails?.dueDate ?? '',
-                dueDateFormat: taskDetails?.dueDateFormat ?? '',
-                priority: taskDetails?.priority ?? undefined,
-                status: taskDetails?.status ?? undefined,
-                assignee: taskDetails?.assignee ?? ''
-            }
+            setTaskDetails(prevState => ({
+                ...prevState,
+                taskTitle: value ?? ''
+            }))
         } else if (input == 'description') {
-            data = {
-                taskTitle: taskDetails?.taskTitle ?? '',
-                description: value ?? '',
-                dueDate: taskDetails?.dueDate ?? '',
-                dueDateFormat: taskDetails?.dueDateFormat ?? '',
-                priority: taskDetails?.priority ?? undefined,
-                status: taskDetails?.status ?? undefined,
-                assignee: taskDetails?.assignee ?? ''
-            }
+            setTaskDetails(prevState => ({
+                ...prevState,
+                description: value ?? ''
+            }))
         } else if (input == 'priority') {
-            data = {
-                taskTitle: taskDetails?.taskTitle ?? '',
-                description: taskDetails?.description ?? '',
-                dueDate: taskDetails?.dueDate ?? '',
-                dueDateFormat: taskDetails?.dueDateFormat ?? '',
-                priority: value,
-                status: taskDetails?.status ?? undefined,
-                assignee: taskDetails?.assignee ?? ''
-            }
+            setTaskDetails(prevState => ({
+                ...prevState,
+                priority: value ?? undefined
+            }))
         } else if (input == 'status') {
-            data = {
-                taskTitle: taskDetails?.taskTitle ?? '',
-                description: taskDetails?.description ?? '',
-                dueDate: taskDetails?.dueDate ?? '',
-                dueDateFormat: taskDetails?.dueDateFormat ?? '',
-                priority: taskDetails?.priority ?? undefined,
-                status: value,
-                assignee: taskDetails?.assignee ?? ''
-            }
+            setTaskDetails(prevState => ({
+                ...prevState,
+                status: value ?? undefined
+            }))
         } else if (input == 'assignee') {
-            data = {
-                taskTitle: taskDetails?.taskTitle ?? '',
-                description: taskDetails?.description ?? '',
-                dueDate: taskDetails?.dueDate ?? '',
-                dueDateFormat: taskDetails?.dueDateFormat ?? '',
-                priority: taskDetails?.priority ?? undefined,
-                assignee: value,
-                status: taskDetails?.status ?? undefined,
-
-            }
+            setTaskDetails(prevState => ({
+                ...prevState,
+                assignee: value ?? undefined
+            }))
         }
-        setTaskDetails(data);
 
     };
 
 
-    const onChangeDueDate = (date,dateString) => {
-        const dateNew = new Date(dateString);
+    const onChangeDueDate = (date, dateString) => {
 
-        let data = {
-            taskTitle: taskDetails?.taskTitle ?? '',
-            description: taskDetails?.description ?? '',
+        setTaskDetails(prevState => ({
+            ...prevState,
             dueDate: dateString,
-            dueDateFormat: date,
-            priority: taskDetails?.priority ?? undefined,
-            status: taskDetails?.status ?? undefined,
-            assignee: taskDetails?.assignee ?? ''
-        }
+            dueDateFormat: date
 
-        setTaskDetails(data);
+        }))
+
 
 
     };
+
 
     const showModalToEdit = (record) => {
         setModalTitle('Edit Task Details');
 
-        record.dueDateFormat= dayjs(record.dueDate);
+        record.dueDateFormat = dayjs(record.dueDate);
         setTaskDetails(record);
         setEditedTaskId(record?._id);
         setIsModalVisible(true);
@@ -133,20 +127,23 @@ const TaskDetailsContainer = () => {
 
     const disabledDate = (current) => {
         return current && current.isBefore(dayjs().startOf('day'));
-      };
+    };
 
     const onHandleSave = () => {
+
         let asArray = Object.entries(taskDetails);
         let emptyInputs = asArray.filter(([key, value]) => (value == '' || value == undefined) && (key != '__v' && key != '_id'));
         emptyInputs = Object.fromEntries(emptyInputs);
         if (Object.keys(taskDetails)?.length == 0 || Object.keys(emptyInputs)?.length > 0) {
-            
+
             setIsError(true);
             setErrorMessage('Please enter all input fields');
         } else {
+
             if (modalTitle?.toLowerCase().includes('add')) {
                 let duplicateTitle = taskInformations?.filter(taskInfo => taskInfo?.taskTitle == taskDetails?.taskTitle);
                 if (duplicateTitle?.length == 0) {
+                    setIsLoadingTable(true);
                     setIsError(false);
                     setErrorMessage('');
                     let req = { req: taskDetails, type: 'add' };
@@ -159,10 +156,21 @@ const TaskDetailsContainer = () => {
 
             }
             else {
-                let taskData = { ...taskDetails, _id: editedTaskId }
-                let req = { req: taskData, type: 'update' };
-                dispatchTaskDetails(req);
-                setIsModalVisible(false);
+                let duplicateTitle = taskInformations?.filter(taskInfo => taskInfo?.taskTitle == taskDetails?.taskTitle);
+                if (duplicateTitle?.length == 0) {
+                    setIsLoadingTable(true);
+                    setIsError(false);
+                    setErrorMessage('');
+                    let taskData = { ...taskDetails, _id: editedTaskId }
+                    let req = { req: taskData, type: 'update' };
+                    dispatchTaskDetails(req);
+                    setIsModalVisible(false);
+                } else {
+
+                    setIsError(true);
+                    setErrorMessage('Duplicate Task Title entered');
+                }
+
             }
         }
 
@@ -171,11 +179,6 @@ const TaskDetailsContainer = () => {
 
     const onDeleteTask = (record) => {
         setRecordToDelete(record?._id);
-        // let data = {
-        //     _id: record?._id ?? ''
-        // };
-        // let req = { req: data, type: 'delete' };
-        //     dispatchTaskDetails(req);
         setIsModalConfirm(true);
     };
 
@@ -294,7 +297,8 @@ const TaskDetailsContainer = () => {
             onDeleteConfirm={onDeleteConfirm}
             onDeleteTask={onDeleteTask}
             onConfirmCancel={onConfirmCancel}
-            disabledDate = {disabledDate}
+            isLoadingTable={isLoadingTable}
+            disabledDate={disabledDate}
 
         />
     )

@@ -7,7 +7,9 @@ const TaskDetailsSchema = new mongoose.Schema({
     dueDate: {type: Date},
     priority: {type: String},
     assignee: {type: String},
-    status: {type: String}
+    status: {type: String},
+    createdBy: {type: String},
+    createdAt: {type:Date, default: Date.now}
 });
 
 

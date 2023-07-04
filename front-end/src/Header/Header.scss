@@ -1,9 +1,24 @@
 .headerStyle {
     color: azure;
-    text-align: center;
-    height: 64;
-    padding-inline: 50;
-    line-height: '64px';
-    background-color: '#7dbcea';
-    font-size: x-large;
+    // text-align: center;
+    // height: 64;
+    // padding-inline: 50;
+    // line-height: '64px';
+    background-color: black;
+    // font-size: x-large;
+    // display: flex;
+    // align-items: center;
   }
+
+.title {
+  text-align: center;
+  margin-left: 300px;
+  font-size: 22px;
+}
+
+.logout {
+   margin-top: 30px;
+   margin-left: 100px;
+   width: 100px
+  
+}
