@@ -1,0 +1,23 @@
+.reg-link{
+    padding-top: 10px;
+}
+
+.login-form {
+    max-width: 300px;
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+
+  .centerLogin {
+    background-color: lightgrey;
+    border: 1px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+  }

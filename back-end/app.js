@@ -1,6 +1,5 @@
 var express = require("express");
 const cors=require("cors");
-
 var routes = require('./routes');
 var connectDB = require('./db/dbConnect');
 
@@ -18,8 +17,10 @@ app.use("/",routes);
 connectDB();
 
 module.exports = app;
-const portNo = 8000;
-app.listen(portNo,() =>{
+const port = 8000;
+
+
+app.listen(port,() =>{
     
-    console.log(`Server running on port ${portNo}`)
+    console.log(`Server running on port ${port}`)
 });

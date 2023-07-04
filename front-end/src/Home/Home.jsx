@@ -7,11 +7,11 @@ import Body from '../Body';
 
 const { Content } = Layout;
 
-const Home = () => {
+const Home = (props) => {
   return (
     <Layout className="overall">
       <Content className="content">
-        <Body />
+        <Body setIsLoggedIn={props.setIsLoggedIn}/>
       </Content>
       
     </Layout>
