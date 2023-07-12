@@ -1,12 +1,26 @@
 const bcrypt = require("bcrypt");
 const { userModel } = require('../model');
+const CryptoJS = require('crypto-js');
 
 const registerUserService = async (req) => {
     try {
         let username = req?.name ?? '';
         let email = req?.email ?? '';
         let mobile = req?.phone ?? NaN;
-        let password = req?.password ?? '';
+        let encryptedPassword = req?.password ?? '';
+        let password;
+        const key = 'secret-encrypt-password'; // Shared secret key
+
+        try {
+            const decryptedBytes = CryptoJS.AES.decrypt(encryptedPassword, key);
+            password = decryptedBytes.toString(CryptoJS.enc.Utf8);
+        } catch (error) {
+            return {
+                rc: 8,
+                message: `Password encryption failed.`
+            }
+        }
+
         const salt = await bcrypt.genSalt();
         password = password != '' ? await bcrypt.hash(password, salt) : null;
         let userExist = await userModel.findOne({ email: email });
@@ -55,9 +69,20 @@ const registerUserService = async (req) => {
 const loginUserService = async (req) => {
     try {
         let email = req?.email ?? '';
-        let userPassword = req?.password ?? null;
+        let encryptedPassword = req?.password ?? null;
         const userData = await userModel.findOne({ email: email });
         if (userData) {
+            const key = 'secret-encrypt-password'; // Shared secret key
+
+            try {
+                const decryptedBytes = CryptoJS.AES.decrypt(encryptedPassword, key);
+                userPassword = decryptedBytes.toString(CryptoJS.enc.Utf8);
+            } catch (error) {
+                return {
+                    rc: 8,
+                    message: `Password encryption failed.`
+                }
+            }
             const isvalidPassword = await bcrypt.compare(userPassword, userData?.password);
             if (isvalidPassword) {
                 let data = {
@@ -76,7 +101,7 @@ const loginUserService = async (req) => {
                     data: []
                 }
             }
-          
+
         } else {
             return {
                 rc: 8,

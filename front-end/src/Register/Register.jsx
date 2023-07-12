@@ -19,6 +19,7 @@ const Register = (props) => {
                         style={{ maxWidth: 600 }}
                         onFinish={props.onRegister}
                         className="login-form"
+                        initialValues={{prefix: '971'}}
                     >
                         <Form.Item
                             label="Username"
@@ -69,6 +70,7 @@ const Register = (props) => {
                               validateTrigger= 'onBlur'
                         >
                             <Input  
+                                addonBefore={props.prefixSelector}
                                 placeholder="Phone Number"
                                 minLength={10}
                                 onChange={(e) => props.handleUserChange(e.target.value, 'phone')}
