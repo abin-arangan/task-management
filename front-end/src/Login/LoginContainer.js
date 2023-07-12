@@ -1,11 +1,11 @@
 import React from 'react';
 import Login from './Login';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import authOperations from '../state/features/Auth/operations';
 import { selectors as authSelectors } from '../state/features/Auth';
 import { useNavigate } from "react-router-dom";
+import CryptoJS from 'crypto-js';
 
 
 const LoginContainer = (props) =>{
@@ -44,6 +44,9 @@ const LoginContainer = (props) =>{
 
     const onLogin =()=>{
         let {email, password} = loginUser;
+        const key = 'secret-encrypt-password'; // Shared secret key
+        const encrypted = CryptoJS.AES.encrypt(password, key).toString();
+        loginUser.password = encrypted;
         if(email && password)
             dispatchLoginUser(loginUser);
     }
